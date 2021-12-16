@@ -1,0 +1,30 @@
+{
+  "name": "@ruleenginejs/runtime",
+  "version": "1.0.0",
+  "description": "Rule engine runtime",
+  "main": "index.js",
+  "files": [
+    "lib",
+    "index.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruleenginejs/ruleengine.git",
+    "directory": "packages/runtime"
+  },
+  "keywords": [
+    "ruleengine"
+  ],
+  "author": "Nikolay Naumenkov",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/ruleenginejs/ruleengine/issues"
+  },
+  "homepage": "https://github.com/ruleenginejs/ruleengine#readme",
+  "engines": {
+    "node": ">=8.10.0"
+  }
+}

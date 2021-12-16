@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/events": "^3.0.0",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^17.0.0",
+    "eslint": "^8.4.1",
+    "eslint-plugin-jest": "^25.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "jest": "^27.4.5"
+  }
+}
