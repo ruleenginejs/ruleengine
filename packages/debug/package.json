@@ -1,0 +1,36 @@
+{
+  "name": "@ruleenginejs/debug",
+  "version": "1.0.0",
+  "description": "Rule engine debug",
+  "main": "index.js",
+  "files": [
+    "lib",
+    "index.js"
+  ],
+  "dependencies": {
+    "debug": "^4.3.3"
+  },
+  "devDependencies": {
+    "@ruleenginejs/runtime": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruleenginejs/ruleengine.git",
+    "directory": "packages/debug"
+  },
+  "keywords": [
+    "ruleengine"
+  ],
+  "author": "Nikolay Naumenkov",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/ruleenginejs/ruleengine/issues"
+  },
+  "homepage": "https://github.com/ruleenginejs/ruleengine#readme",
+  "engines": {
+    "node": ">=8.10.0"
+  }
+}
