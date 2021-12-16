@@ -5,7 +5,9 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "postversion": "npm run push",
+    "push": "git push origin master --tags"
   },
   "license": "MIT",
   "devDependencies": {
