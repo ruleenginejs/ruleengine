@@ -58,6 +58,6 @@ jobs:
         prerelease: false
     - name: Publish
       if: success()
-      run: npm publish --access public
+      run: npm publish --workspaces
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
