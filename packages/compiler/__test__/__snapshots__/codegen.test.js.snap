@@ -15,7 +15,7 @@ const singleStep_1 = new SingleStep({
   id: 1,
   name: \\"Some step\\",
   props: {
-    prop1: require(\\"./fixtures/pipelines\\\\\\\\./other-pipeline.js\\")
+    prop1: require(\\"./fixtures/pipelines/./other-pipeline.js\\")
   }
 });
 pipeline.add(singleStep_1);
@@ -224,7 +224,7 @@ const singleStep_4 = new SingleStep({
 const singleStep_5 = new SingleStep({
   id: 4,
   name: \\"Some step\\",
-  handler: require(\\"./fixtures/pipelines\\\\\\\\./handler.js\\"),
+  handler: require(\\"./fixtures/pipelines/./handler.js\\"),
   ports: {
     in: [\\"p1\\", \\"p2\\"],
     out: [\\"p3\\", \\"p4\\"]
