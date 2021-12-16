@@ -1,0 +1,250 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruleenginejs/ruleengine-schema/blob/master/schema/pipeline-schema.json",
+  "$comment": "v1.0.0",
+  "title": "Pipeline schema",
+  "description": "A pipeline definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "steps"
+  ],
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "steps": {
+      "$ref": "#/definitions/steps"
+    }
+  },
+  "definitions": {
+    "steps": {
+      "type": "array",
+      "description": "Pipeline steps",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/start_end_error_step"
+          },
+          {
+            "$ref": "#/definitions/single_step"
+          },
+          {
+            "$ref": "#/definitions/composite_step"
+          }
+        ]
+      }
+    },
+    "step_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "description": "Unique identifier"
+    },
+    "step_type": {
+      "enum": [
+        "start",
+        "end",
+        "error",
+        "single",
+        "composite"
+      ]
+    },
+    "step_name": {
+      "type": "string",
+      "description": "Step name"
+    },
+    "step_ports": {
+      "type": "object",
+      "properties": {
+        "in": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Incoming port must be a 'default' or string"
+          }
+        },
+        "out": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Outgoing port must be a 'default', 'error' or string"
+          }
+        }
+      }
+    },
+    "step_props": {
+      "type": "object"
+    },
+    "step_connect": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/step_connect_item"
+      }
+    },
+    "step_connect_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stepId"
+      ],
+      "properties": {
+        "stepId": {
+          "$ref": "#/definitions/step_id"
+        },
+        "srcOutPort": {
+          "type": "string"
+        },
+        "dstInPort": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Connect name"
+        }
+      }
+    },
+    "step_handler": {
+      "type": "string"
+    },
+    "step_handler_file": {
+      "type": "string",
+      "format": "uri-reference"
+    },
+    "step_substeps": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/single_step"
+          },
+          {
+            "$ref": "#/definitions/composite_step"
+          }
+        ]
+      }
+    },
+    "step_canvas": {
+      "type": "object"
+    },
+    "start_end_error_step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/step_id"
+        },
+        "type": {
+          "$ref": "#/definitions/step_type"
+        },
+        "name": {
+          "$ref": "#/definitions/step_name"
+        },
+        "ports": {
+          "$ref": "#/definitions/step_ports"
+        },
+        "props": {
+          "$ref": "#/definitions/step_props"
+        },
+        "connect": {
+          "$ref": "#/definitions/step_connect"
+        },
+        "canvas": {
+          "$ref": "#/definitions/step_canvas"
+        }
+      }
+    },
+    "single_step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/step_id"
+        },
+        "type": {
+          "$ref": "#/definitions/step_type"
+        },
+        "name": {
+          "$ref": "#/definitions/step_name"
+        },
+        "ports": {
+          "$ref": "#/definitions/step_ports"
+        },
+        "props": {
+          "$ref": "#/definitions/step_props"
+        },
+        "connect": {
+          "$ref": "#/definitions/step_connect"
+        },
+        "handler": {
+          "$ref": "#/definitions/step_handler"
+        },
+        "handlerFile": {
+          "$ref": "#/definitions/step_handler_file"
+        },
+        "canvas": {
+          "$ref": "#/definitions/step_canvas"
+        }
+      }
+    },
+    "composite_step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "steps"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/step_id"
+        },
+        "type": {
+          "$ref": "#/definitions/step_type"
+        },
+        "name": {
+          "$ref": "#/definitions/step_name"
+        },
+        "ports": {
+          "$ref": "#/definitions/step_ports"
+        },
+        "props": {
+          "$ref": "#/definitions/step_props"
+        },
+        "connect": {
+          "$ref": "#/definitions/step_connect"
+        },
+        "startId": {
+          "$ref": "#/definitions/step_id",
+          "description": "Start substep id"
+        },
+        "endId": {
+          "$ref": "#/definitions/step_id",
+          "description": "End substep id"
+        },
+        "steps": {
+          "$ref": "#/definitions/step_substeps"
+        },
+        "canvas": {
+          "$ref": "#/definitions/step_canvas"
+        }
+      }
+    }
+  }
+}
