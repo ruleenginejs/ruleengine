@@ -1,0 +1,38 @@
+{
+  "name": "@ruleenginejs/express",
+  "version": "1.0.0",
+  "description": "Rule engine express middleware",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "@ruleenginejs/debug": "^1.0.0",
+    "http-errors": "^1.8.1",
+    "kind-of": "^6.0.3"
+  },
+  "devDependencies": {
+    "@ruleenginejs/runtime": "^1.0.0",
+    "supertest": "^6.1.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruleenginejs/ruleengine.git",
+    "directory": "packages/express"
+  },
+  "keywords": [
+    "ruleengine"
+  ],
+  "author": "Nikolay Naumenkov",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/ruleenginejs/ruleengine/issues"
+  },
+  "homepage": "https://github.com/ruleenginejs/ruleengine#readme",
+  "engines": {
+    "node": ">=8.10.0"
+  }
+}
