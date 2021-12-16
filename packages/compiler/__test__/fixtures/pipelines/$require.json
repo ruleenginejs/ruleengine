@@ -1,0 +1,13 @@
+{
+  "id": "steps",
+  "steps": [
+    {
+      "id": 1,
+      "type": "single",
+      "name": "Some step",
+      "props": {
+        "prop1": "$require:./other-pipeline.js"
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "steps",
+  "steps": [
+    {
+      "id": 1,
+      "type": "composite",
+      "startId": 1,
+      "endId": 2,
+      "steps": [
+        {
+          "id": 1,
+          "type": "single"
+        }
+      ]
+    }
+  ]
+}

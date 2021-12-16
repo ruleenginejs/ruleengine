@@ -1,0 +1,64 @@
+{
+  "id": "steps",
+  "steps": [
+    {
+      "id": 1,
+      "type": "start",
+      "connect": [
+        {
+          "stepId": 3,
+          "srcOutPort": null,
+          "dstInPort": "p1"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "end"
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "name": "Some step",
+      "ports": {
+        "in": [
+          "p1",
+          "p2"
+        ],
+        "out": [
+          "p3",
+          "p4"
+        ]
+      },
+      "handler": "module.exports = (context, next) => { next('p3'); };",
+      "connect": [
+        {
+          "stepId": 4,
+          "srcOutPort": "p4",
+          "dstInPort": "p2"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "name": "Some step",
+      "ports": {
+        "in": [
+          "p1",
+          "p2"
+        ],
+        "out": [
+          "p3",
+          "p4"
+        ]
+      },
+      "handler": "module.exports = (context, next) => { next('default'); };",
+      "connect": [
+        {
+          "stepId": 2
+        }
+      ]
+    }
+  ]
+}

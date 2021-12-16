@@ -1,0 +1,46 @@
+{
+  "id": "composite-steps",
+  "steps": [
+    {
+      "id": 1,
+      "type": "start",
+      "connect": [
+        {
+          "stepId": 3
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "end"
+    },
+    {
+      "id": 3,
+      "type": "composite",
+      "startId": 1,
+      "endId": 2,
+      "steps": [
+        {
+          "id": 1,
+          "type": "single",
+          "handler": null,
+          "connect": [
+            {
+              "stepId": 2
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "single",
+          "handler": null
+        }
+      ],
+      "connect": [
+        {
+          "stepId": 2
+        }
+      ]
+    }
+  ]
+}

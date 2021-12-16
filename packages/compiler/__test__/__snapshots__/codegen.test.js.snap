@@ -1,0 +1,239 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`code generation $require 1`] = `
+"const {
+  SingleStep,
+  CompositeStep,
+  StartStep,
+  EndStep,
+  ErrorStep,
+  Pipeline
+} = require(\\"runtimemodule\\");
+
+const pipeline = new Pipeline();
+const singleStep_1 = new SingleStep({
+  id: 1,
+  name: \\"Some step\\",
+  props: {
+    prop1: require(\\"./fixtures/pipelines\\\\\\\\./other-pipeline.js\\")
+  }
+});
+pipeline.add(singleStep_1);
+module.exports = pipeline;"
+`;
+
+exports[`code generation composite steps 1`] = `
+"const {
+  SingleStep,
+  CompositeStep,
+  StartStep,
+  EndStep,
+  ErrorStep,
+  Pipeline
+} = require(\\"runtimemodule\\");
+
+const pipeline = new Pipeline();
+const startStep_1 = new StartStep({
+  id: 1
+});
+const endStep_2 = new EndStep({
+  id: 2
+});
+const compositeStep_3 = new CompositeStep({
+  id: 3
+});
+startStep_1.connectTo(compositeStep_3);
+compositeStep_3.connectTo(endStep_2);
+const singleStep_4 = new SingleStep({
+  id: 1,
+  handler: null
+});
+const singleStep_5 = new SingleStep({
+  id: 2,
+  handler: null
+});
+singleStep_4.connectTo(singleStep_5);
+compositeStep_3.setStartStep(singleStep_4);
+compositeStep_3.setEndStep(singleStep_5);
+compositeStep_3.add(singleStep_4, singleStep_5);
+pipeline.add(startStep_1, endStep_2, compositeStep_3);
+module.exports = pipeline;"
+`;
+
+exports[`code generation composite substeps 1`] = `
+"const {
+  SingleStep,
+  CompositeStep,
+  StartStep,
+  EndStep,
+  ErrorStep,
+  Pipeline
+} = require(\\"runtimemodule\\");
+
+const pipeline = new Pipeline();
+const startStep_1 = new StartStep({
+  id: 1
+});
+const endStep_2 = new EndStep({
+  id: 2
+});
+const compositeStep_3 = new CompositeStep({
+  id: 3
+});
+startStep_1.connectTo(compositeStep_3);
+compositeStep_3.connectTo(endStep_2);
+const singleStep_4 = new SingleStep({
+  id: 1
+});
+const singleStep_5 = new SingleStep({
+  id: 2
+});
+const compositeStep_6 = new CompositeStep({
+  id: 3
+});
+singleStep_4.connectTo(singleStep_5);
+singleStep_5.connectTo(compositeStep_6);
+compositeStep_3.setStartStep(singleStep_4);
+compositeStep_3.setEndStep(compositeStep_6);
+compositeStep_3.add(singleStep_4, singleStep_5, compositeStep_6);
+const singleStep_7 = new SingleStep({
+  id: 1
+});
+const compositeStep_8 = new CompositeStep({
+  id: 2
+});
+singleStep_7.connectTo(compositeStep_8);
+compositeStep_6.setStartStep(singleStep_7);
+compositeStep_6.setEndStep(compositeStep_8);
+compositeStep_6.add(singleStep_7, compositeStep_8);
+const singleStep_9 = new SingleStep({
+  id: 1
+});
+const singleStep_10 = new SingleStep({
+  id: 2
+});
+singleStep_9.connectTo(singleStep_10);
+compositeStep_8.setStartStep(singleStep_9);
+compositeStep_8.setEndStep(singleStep_10);
+compositeStep_8.add(singleStep_9, singleStep_10);
+pipeline.add(startStep_1, endStep_2, compositeStep_3);
+module.exports = pipeline;"
+`;
+
+exports[`code generation empty 1`] = `
+"const {
+  SingleStep,
+  CompositeStep,
+  StartStep,
+  EndStep,
+  ErrorStep,
+  Pipeline
+} = require(\\"runtimemodule\\");
+
+const pipeline = new Pipeline();
+module.exports = pipeline;"
+`;
+
+exports[`code generation step connections 1`] = `
+"const requireFromString = require(\\"require-from-string\\");
+
+const {
+  SingleStep,
+  CompositeStep,
+  StartStep,
+  EndStep,
+  ErrorStep,
+  Pipeline
+} = require(\\"runtimemodule\\");
+
+const pipeline = new Pipeline();
+const startStep_1 = new StartStep({
+  id: 1
+});
+const endStep_2 = new EndStep({
+  id: 2
+});
+const singleStep_3 = new SingleStep({
+  id: 3,
+  name: \\"Some step\\",
+  handler: requireFromString(\\"module.exports = (context, next) => { next('p3'); };\\"),
+  ports: {
+    in: [\\"p1\\", \\"p2\\"],
+    out: [\\"p3\\", \\"p4\\"]
+  }
+});
+const singleStep_4 = new SingleStep({
+  id: 4,
+  name: \\"Some step\\",
+  handler: requireFromString(\\"module.exports = (context, next) => { next('default'); };\\"),
+  ports: {
+    in: [\\"p1\\", \\"p2\\"],
+    out: [\\"p3\\", \\"p4\\"]
+  }
+});
+startStep_1.connectTo(singleStep_3, null, \\"p1\\");
+singleStep_3.connectTo(singleStep_4, \\"p4\\", \\"p2\\");
+singleStep_4.connectTo(endStep_2);
+pipeline.add(startStep_1, endStep_2, singleStep_3, singleStep_4);
+module.exports = pipeline;"
+`;
+
+exports[`code generation steps 1`] = `
+"const requireFromString = require(\\"require-from-string\\");
+
+const {
+  SingleStep,
+  CompositeStep,
+  StartStep,
+  EndStep,
+  ErrorStep,
+  Pipeline
+} = require(\\"runtimemodule\\");
+
+const pipeline = new Pipeline();
+const startStep_1 = new StartStep({
+  id: 1
+});
+const endStep_2 = new EndStep({
+  id: 2
+});
+const errorStep_3 = new ErrorStep({
+  id: 10
+});
+const singleStep_4 = new SingleStep({
+  id: 3,
+  name: \\"Some step\\",
+  handler: requireFromString(\\"module.exports = (context, next) => { next(); };\\"),
+  ports: {
+    in: [\\"p1\\", \\"p2\\"],
+    out: [\\"p3\\", \\"p4\\"]
+  },
+  props: {
+    prop1: true,
+    prop2: \\"str\\",
+    prop3: null,
+    prop4: 123,
+    prop5: [true, \\"str\\", 123, [\\"srt\\"]],
+    prop6: {
+      test1: 1,
+      test2: \\"str\\",
+      test3: null
+    }
+  }
+});
+const singleStep_5 = new SingleStep({
+  id: 4,
+  name: \\"Some step\\",
+  handler: require(\\"./fixtures/pipelines\\\\\\\\./handler.js\\"),
+  ports: {
+    in: [\\"p1\\", \\"p2\\"],
+    out: [\\"p3\\", \\"p4\\"]
+  },
+  props: {}
+});
+const singleStep_6 = new SingleStep({
+  id: 11
+});
+pipeline.add(startStep_1, endStep_2, errorStep_3, singleStep_4, singleStep_5, singleStep_6);
+module.exports = pipeline;"
+`;

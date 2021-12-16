@@ -1,0 +1,73 @@
+{
+  "id": "steps",
+  "steps": [
+    {
+      "id": 1,
+      "type": "start"
+    },
+    {
+      "id": 2,
+      "type": "end"
+    },
+    {
+      "id": 10,
+      "type": "error"
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "name": "Some step",
+      "ports": {
+        "in": [
+          "p1",
+          "p2"
+        ],
+        "out": [
+          "p3",
+          "p4"
+        ]
+      },
+      "handler": "module.exports = (context, next) => { next(); };",
+      "props": {
+        "prop1": true,
+        "prop2": "str",
+        "prop3": null,
+        "prop4": 123,
+        "prop5": [
+          true,
+          "str",
+          123,
+          [
+            "srt"
+          ]
+        ],
+        "prop6": {
+          "test1": 1,
+          "test2": "str",
+          "test3": null
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "name": "Some step",
+      "ports": {
+        "in": [
+          "p1",
+          "p2"
+        ],
+        "out": [
+          "p3",
+          "p4"
+        ]
+      },
+      "handlerFile": "./handler.js",
+      "props": {}
+    },
+    {
+      "id": 11,
+      "type": "single"
+    }
+  ]
+}

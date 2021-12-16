@@ -1,0 +1,13 @@
+{
+  "id": "steps",
+  "steps": [
+    {
+      "id": 1,
+      "type": "start"
+    },
+    {
+      "id": 1,
+      "type": "end"
+    }
+  ]
+}

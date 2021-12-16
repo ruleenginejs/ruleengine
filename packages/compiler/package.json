@@ -1,0 +1,39 @@
+{
+  "name": "@ruleenginejs/compiler",
+  "version": "1.0.0",
+  "description": "Rule engine compiler",
+  "main": "index.js",
+  "files": [
+    "lib",
+    "index.js"
+  ],
+  "dependencies": {
+    "@babel/generator": "^7.16.5",
+    "@babel/types": "^7.16.0",
+    "kind-of": "^6.0.3",
+    "require-from-string": "^2.0.2"
+  },
+  "devDependencies": {
+    "@ruleenginejs/runtime": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruleenginejs/ruleengine.git",
+    "directory": "packages/compiler"
+  },
+  "keywords": [
+    "ruleengine"
+  ],
+  "author": "Nikolay Naumenkov",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/ruleenginejs/ruleengine/issues"
+  },
+  "homepage": "https://github.com/ruleenginejs/ruleengine#readme",
+  "engines": {
+    "node": ">=8.10.0"
+  }
+}
