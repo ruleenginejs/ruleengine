@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/ruleenginejs/ruleengine-schema/blob/master/schema/pipeline-schema.json",
+  "$id": "https://github.com/ruleenginejs/ruleengine/blob/master/packages/schema/schema/pipeline-schema.json",
   "$comment": "v1.0.0",
   "title": "Pipeline schema",
   "description": "A pipeline definition",

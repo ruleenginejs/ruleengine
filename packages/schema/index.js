@@ -2,7 +2,7 @@ const Ajv = require("ajv").default;
 const addFormats = require("ajv-formats").default;
 
 const SCHEMA_IDS = Object.freeze({
-  PIPELINE: "https://github.com/ruleenginejs/ruleengine/packages/schema/blob/master/schema/pipeline-schema.json"
+  PIPELINE: "https://github.com/ruleenginejs/ruleengine/blob/master/packages/schema/schema/pipeline-schema.json"
 });
 
 const SCHEMA_FILES = {
