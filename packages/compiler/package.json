@@ -1,6 +1,6 @@
 {
   "name": "@ruleenginejs/compiler",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Rule engine compiler",
   "main": "index.js",
   "files": [
