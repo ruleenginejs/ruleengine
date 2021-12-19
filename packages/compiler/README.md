@@ -13,7 +13,7 @@ npm install @ruleenginejs/compiler
 ```js
 const { compile } = require("@ruleenginejs/compiler");
 
-const pipeline = compile(input, options);
+const pipeline = compile(input, { runtimeModule: "@ruleenginejs/runtime" });
 pipeline.execute();
 ```
 
@@ -22,7 +22,7 @@ pipeline.execute();
 ```js
 const { generateCode } = require("@ruleenginejs/compiler");
 
-const code = generateCode(input, options);
+const code = generateCode(input, { runtimeModule: "@ruleenginejs/runtime" });
 ```
 
 ## License
