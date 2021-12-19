@@ -6,8 +6,8 @@
   ],
   "scripts": {
     "test": "jest",
-    "version-patch": "npm run workspaces-version-patch && npm version patch",
-    "workspaces-version-patch": "npm version --workspaces --git-tag-version=false patch && npm run commit",
+    "patch": "npm run workspaces-patch && npm version patch",
+    "workspaces-patch": "npm version --workspaces --git-tag-version=false patch && npm run commit",
     "commit": "git add packages/* && git commit -m \"Update workspace versions\"",
     "postversion": "npm run push",
     "push": "git push origin master --tags"
