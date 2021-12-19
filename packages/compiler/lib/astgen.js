@@ -450,8 +450,11 @@ function addDepModule(moduleName, scope) {
 }
 
 function getModulePath(moduleName, scope) {
+  if (scope.baseDir === undefined || scope.baseDir === null) {
+    return moduleName;
+  }
   if (kindOf(scope.baseDir) !== "string") {
-    throw new Error("baseDir option is required if using $require or handlerFile");
+    throw new Error("baseDir option must be a string");
   }
   const baseDir = scope.baseDir ? `${scope.baseDir}${path.sep}` : "";
   const moudlePath = `${baseDir}${moduleName}`;
