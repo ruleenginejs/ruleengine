@@ -2,9 +2,9 @@ const createError = require("http-errors");
 const debug = require("@ruleenginejs/debug");
 const kindOf = require("kind-of");
 
-module.exports = ruleengine;
+module.exports = ruleEngine;
 
-function ruleengine(rules, options) {
+function ruleEngine(rules, options) {
   const opts = options || {};
 
   if (kindOf(rules) !== "object" && typeof rules !== "function") {
@@ -53,21 +53,28 @@ function ruleengine(rules, options) {
     rulesFn = null;
   }
 
+  let debugFn;
+  if (isDebug) {
+    debugFn = debug(debugNamespace, logger);
+  } else {
+    debugFn = null;
+  }
+
   return async function middleware(req, res, next) {
     const id = req.params[idParam];
     const rule = rulesFn ? rulesFn(req, res, id) : rules[id];
 
     if (!rule) {
-      next(createError(404, `rule not found: ${id}`));
+      next(createError(404, `Rule '${id}' not found`));
       return;
     }
 
-    const log = isDebug ? debug(debugNamespace, logger)(rule, id) : null;
+    const log = isDebug ? debugFn(rule, id) : null;
 
     try {
       await rule.execute(context(req, res));
     } catch (e) {
-      next(createError(500, `rule execute error: ${id}`, { cause: e }));
+      next(createError(500, `Rule '${id}' execute error`, { cause: e }));
     } finally {
       if (log) {
         log.destroy();

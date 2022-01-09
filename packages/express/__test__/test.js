@@ -40,7 +40,7 @@ describe("ruleengine()", () => {
       const response = await request(server).get(`/rules/${ruleId}`);
 
       expect(response.statusCode).toBe(404);
-      expect(response.text).toMatch(`rule not found: ${ruleId}`);
+      expect(response.text).toMatch(`Rule '${ruleId}' not found`);
     });
 
     it("error execute", async () => {
@@ -48,7 +48,7 @@ describe("ruleengine()", () => {
       const response = await request(server).get(`/rules/${ruleId}`);
 
       expect(response.statusCode).toBe(500);
-      expect(response.text).toMatch(`rule execute error: ${ruleId}`);
+      expect(response.text).toMatch(`Rule '${ruleId}' execute error`);
     });
   });
 
