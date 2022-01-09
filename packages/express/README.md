@@ -10,11 +10,11 @@ npm install @ruleenginejs/express
 
 ```js
 const express = require("express");
-const ruleengine = require("@ruleenginejs/express");
+const ruleEngine = require("@ruleenginejs/express");
 
 const app = express();
 
-app.use("/rules/:id", ruleengine({
+app.use("/rules/:id", ruleEngine({
   "rule": require("./pipeline")
 }))
 
@@ -26,7 +26,7 @@ app.listen(8080);
 ### Custom id param
 
 ```js
-app.use("/rules/:ruleId", ruleengine(rules, {
+app.use("/rules/:ruleId", ruleEngine(rules, {
   idParam: "ruleId"
 })
 ```
@@ -34,7 +34,7 @@ app.use("/rules/:ruleId", ruleengine(rules, {
 ### Enable debug
 
 ```js
-app.use("/rules/:id", ruleengine(rules, {
+app.use("/rules/:id", ruleEngine(rules, {
   debug: app.get("env") === "development"
 })
 ```
