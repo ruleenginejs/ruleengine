@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/ruleenginejs/ruleengine/blob/master/packages/schema/schema/pipeline-schema.json",
-  "$comment": "v1.0.0",
+  "$comment": "v1.0.1",
   "title": "Pipeline schema",
   "description": "A pipeline definition",
   "type": "object",
@@ -27,7 +27,7 @@
       "items": {
         "anyOf": [
           {
-            "$ref": "#/definitions/start_end_error_step"
+            "$ref": "#/definitions/navigation_step"
           },
           {
             "$ref": "#/definitions/single_step"
@@ -112,9 +112,6 @@
         }
       }
     },
-    "step_handler": {
-      "type": "string"
-    },
     "step_handler_file": {
       "type": "string",
       "format": "uri-reference"
@@ -135,7 +132,7 @@
     "step_canvas": {
       "type": "object"
     },
-    "start_end_error_step": {
+    "navigation_step": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -191,9 +188,6 @@
         },
         "connect": {
           "$ref": "#/definitions/step_connect"
-        },
-        "handler": {
-          "$ref": "#/definitions/step_handler"
         },
         "handlerFile": {
           "$ref": "#/definitions/step_handler_file"

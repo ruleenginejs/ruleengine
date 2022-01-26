@@ -232,7 +232,7 @@ describe("pipeline-schema", () => {
         {
           id: 1,
           type: "single",
-          handler: "some handler",
+          handlerFile: "./step.js",
           canvas: {
             prop1: "prop1"
           }
