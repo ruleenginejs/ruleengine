@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "description": "Rule engine schema",
   "main": "index.js",
-  "typings": "index.d.ts",
+  "types": "index.d.ts",
   "files": [
     "schema",
     "index.js",
