@@ -3,9 +3,11 @@
   "version": "1.0.2",
   "description": "Rule engine runtime",
   "main": "index.js",
+  "typings": "index.d.ts",
   "files": [
     "lib",
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",
