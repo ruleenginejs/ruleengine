@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "description": "Rule engine compiler",
   "main": "index.js",
+  "typings": "index.d.ts",
   "files": [
     "lib",
     "index.js"
