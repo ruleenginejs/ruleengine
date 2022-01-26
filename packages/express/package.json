@@ -7,13 +7,13 @@
     "index.js"
   ],
   "dependencies": {
-    "@ruleenginejs/debug": "^1.0.0",
-    "http-errors": "^1.8.1",
+    "@ruleenginejs/debug": "^1.0.2",
+    "http-errors": "^2.0.0",
     "kind-of": "^6.0.3"
   },
   "devDependencies": {
-    "@ruleenginejs/runtime": "^1.0.0",
-    "supertest": "^6.1.6"
+    "@ruleenginejs/runtime": "^1.0.2",
+    "supertest": "^6.2.2"
   },
   "repository": {
     "type": "git",

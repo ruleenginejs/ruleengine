@@ -10,7 +10,7 @@
     "debug": "^4.3.3"
   },
   "devDependencies": {
-    "@ruleenginejs/runtime": "^1.0.0"
+    "@ruleenginejs/runtime": "^1.0.2"
   },
   "repository": {
     "type": "git",

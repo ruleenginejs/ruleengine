@@ -8,13 +8,13 @@
     "index.js"
   ],
   "dependencies": {
-    "@babel/generator": "^7.16.5",
-    "@babel/types": "^7.16.0",
+    "@babel/generator": "^7.16.8",
+    "@babel/types": "^7.16.8",
     "kind-of": "^6.0.3",
     "require-from-string": "^2.0.2"
   },
   "devDependencies": {
-    "@ruleenginejs/runtime": "^1.0.0"
+    "@ruleenginejs/runtime": "^1.0.2"
   },
   "repository": {
     "type": "git",
