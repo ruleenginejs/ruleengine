@@ -14,7 +14,7 @@ class Pipeline extends EventEmmiter {
       options = {};
     }
 
-    if (options.stepExecutor) {
+    if (typeof options.stepExecutor === "function") {
       this.stepExecutor = options.stepExecutor;
     } else {
       this.stepExecutor = StepExecutor;
@@ -58,8 +58,12 @@ class Pipeline extends EventEmmiter {
     }
   }
 
+  createExecutor() {
+    return new this.stepExecutor(this.startStep, this.errorStep, this.steps);
+  }
+
   async execute(context = {}) {
-    const executor = new this.stepExecutor(this.startStep, this.errorStep, this.steps);
+    const executor = this.createExecutor();
 
     try {
       this.emit(EXECUTE_START, executor);
