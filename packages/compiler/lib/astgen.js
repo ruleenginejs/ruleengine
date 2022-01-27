@@ -1,6 +1,5 @@
 const t = require("@babel/types");
 const kindOf = require("kind-of");
-const path = require("path");
 
 const SINGLE_STEP_CLASS = "SingleStep";
 const COMPOSITE_STEP_CLASS = "CompositeStep";
@@ -11,6 +10,8 @@ const PIPELINE_CLASS = "Pipeline";
 const PIPELINE_VAR = "pipeline";
 const REQUIRE_FROM_STRING_VAR = "requireFromString";
 const REQUIRE_FROM_STRING_MODULE = "require-from-string";
+const REQUIRE_SUBSTITUTION = "$require:";
+const PATH_SEPARATOR = "/";
 
 const STEP_CLASS_BY_TYPE = {
   "start": START_STEP_CLASS,
@@ -19,6 +20,15 @@ const STEP_CLASS_BY_TYPE = {
   "single": SINGLE_STEP_CLASS,
   "composite": COMPOSITE_STEP_CLASS
 };
+
+const IMPORT_CLASSES = [
+  SINGLE_STEP_CLASS,
+  COMPOSITE_STEP_CLASS,
+  START_STEP_CLASS,
+  END_STEP_CLASS,
+  ERROR_STEP_CLASS,
+  PIPELINE_CLASS
+];
 
 function generateAst(input, options = {}) {
   if (kindOf(input) !== "object") {
@@ -32,19 +42,14 @@ function generateAst(input, options = {}) {
     uniqueCounter: 1,
     stepVars: {},
     global: statements,
-    dep: { [REQUIRE_FROM_STRING_MODULE]: false },
-    baseDir: options.baseDir
+    dep: {},
+    baseDir: options.baseDir,
+    esModule: options.esModule
   };
 
   if (options.runtimeModule) {
-    statements.push(generateRequire([
-      SINGLE_STEP_CLASS,
-      COMPOSITE_STEP_CLASS,
-      START_STEP_CLASS,
-      END_STEP_CLASS,
-      ERROR_STEP_CLASS,
-      PIPELINE_CLASS
-    ], options.runtimeModule))
+    const importFn = options.esModule ? generateImport : generateRequire;
+    statements.push(importFn(IMPORT_CLASSES, options.runtimeModule));
   }
 
   statements.push(generateNewInstance(PIPELINE_VAR, PIPELINE_CLASS));
@@ -53,10 +58,12 @@ function generateAst(input, options = {}) {
     statements.push.apply(statements, generateSteps(input.steps, scope));
   }
 
-  statements.push(generateModuleExport(PIPELINE_VAR));
+  const exportFn = options.esModule ? generateDefaultExport : generateModuleExport;
+  statements.push(exportFn(PIPELINE_VAR));
 
   const program = t.program(statements);
   const ast = t.file(program);
+
   return ast;
 }
 
@@ -101,6 +108,21 @@ function generateModuleExport(varName) {
   )
 }
 
+function generateImport(varName, moduleName) {
+  return t.importDeclaration(
+    Array.isArray(varName)
+      ? varName.map(n => t.importSpecifier(
+        t.identifier(n),
+        t.identifier(n)))
+      : [t.importDefaultSpecifier(t.identifier(varName))],
+    t.stringLiteral(moduleName)
+  );
+}
+
+function generateDefaultExport(varName) {
+  return t.exportDefaultDeclaration(t.identifier(varName));
+}
+
 function generateValue(value, isSubstitutions = false, scope = null) {
   switch (kindOf(value)) {
     case "undefined":
@@ -131,17 +153,21 @@ function generateValue(value, isSubstitutions = false, scope = null) {
 }
 
 function resolveStringSubstitutions(value, scope) {
-  const requireSubstitution = "$require:";
-  if (value.indexOf(requireSubstitution) === 0) {
-    return t.callExpression(
-      t.identifier("require"),
-      [t.stringLiteral(
-        getModulePath(
-          value.substr(requireSubstitution.length),
-          scope
-        )
-      )]
-    )
+  if (value.indexOf(REQUIRE_SUBSTITUTION) === 0) {
+    const moduleName = value.substr(REQUIRE_SUBSTITUTION.length);
+
+    if (scope.esModule) {
+      const varName = generateUniqueName("handler", scope);
+      addDepModule(varName, getModulePath(moduleName, scope), scope);
+      return t.identifier(varName);
+    } else {
+      return t.callExpression(
+        t.identifier("require"),
+        [t.stringLiteral(
+          getModulePath(moduleName, scope)
+        )]
+      )
+    }
   } else {
     return t.stringLiteral(value);
   }
@@ -185,7 +211,7 @@ function generateNewInstanceOfStep(step, scope) {
 
 function addStepVar(stepId, varName, scope) {
   if (scope.stepVars[stepId]) {
-    throw new Error(`duplicate step identifiers: ${stepId}`);
+    throw new Error(`duplicate step identifier: ${stepId}`);
   }
   scope.stepVars[stepId] = varName;
 }
@@ -202,31 +228,9 @@ function generateStepOptions(step, scope) {
   }
 
   if ("handler" in step) {
-    if (kindOf(step.handler) === "string") {
-      addDepModule(REQUIRE_FROM_STRING_MODULE, scope);
-
-      props.push(t.objectProperty(
-        t.identifier("handler"),
-        t.callExpression(
-          t.identifier(REQUIRE_FROM_STRING_VAR),
-          [t.stringLiteral(step.handler)]
-        )
-      ))
-    } else {
-      props.push(generateObjProperty("handler", step.handler));
-    }
+    props.push(generateStepHandlerFromString(step, scope));
   } else if ("handlerFile" in step) {
-    if (kindOf(step.handlerFile) === "string") {
-      props.push(t.objectProperty(
-        t.identifier("handler"),
-        t.callExpression(
-          t.identifier("require"),
-          [t.stringLiteral(getModulePath(step.handlerFile, scope))]
-        )
-      ))
-    } else {
-      props.push(generateObjProperty("handler", step.handlerFile));
-    }
+    props.push(generateStepHandlerFromModule(step, scope));
   }
 
   if ("ports" in step) {
@@ -248,6 +252,42 @@ function generateStepOptions(step, scope) {
   }
 
   return t.objectExpression(props);
+}
+
+function generateStepHandlerFromString(step, scope) {
+  if (kindOf(step.handler) !== "string") {
+    return generateObjProperty("handler", step.handler);
+  }
+  addDepModule(REQUIRE_FROM_STRING_VAR, REQUIRE_FROM_STRING_MODULE, scope);
+  return t.objectProperty(
+    t.identifier("handler"),
+    t.callExpression(
+      t.identifier(REQUIRE_FROM_STRING_VAR),
+      [t.stringLiteral(step.handler)]
+    )
+  );
+}
+
+function generateStepHandlerFromModule(step, scope) {
+  if (kindOf(step.handlerFile) !== "string") {
+    return generateObjProperty("handler", step.handlerFile);
+  }
+  if (scope.esModule) {
+    const varName = generateUniqueName("handler", scope);
+    addDepModule(varName, getModulePath(step.handlerFile, scope), scope);
+    return t.objectProperty(
+      t.identifier("handler"),
+      t.identifier(varName)
+    );
+  } else {
+    return t.objectProperty(
+      t.identifier("handler"),
+      t.callExpression(
+        t.identifier("require"),
+        [t.stringLiteral(getModulePath(step.handlerFile, scope))]
+      )
+    );
+  }
 }
 
 function generateStepPortsOption(ports) {
@@ -436,17 +476,12 @@ function generateSetCompositeParameters(compositeStep, scope) {
   return statements;
 }
 
-function addDepModule(moduleName, scope) {
-  if (scope.dep[moduleName]) return;
-
-  if (moduleName === REQUIRE_FROM_STRING_MODULE) {
-    scope.global.unshift(generateRequire(
-      REQUIRE_FROM_STRING_VAR,
-      REQUIRE_FROM_STRING_MODULE
-    ));
+function addDepModule(varName, moduleName, scope) {
+  if (!scope.dep[moduleName]) {
+    const importFn = scope.esModule ? generateImport : generateRequire;
+    scope.global.unshift(importFn(varName, moduleName));
+    scope.dep[moduleName] = true;
   }
-
-  scope.dep[moduleName] = true;
 }
 
 function getModulePath(moduleName, scope) {
@@ -456,7 +491,7 @@ function getModulePath(moduleName, scope) {
   if (kindOf(scope.baseDir) !== "string") {
     throw new Error("baseDir option must be a string");
   }
-  const baseDir = scope.baseDir ? `${scope.baseDir}${path.sep}` : "";
+  const baseDir = scope.baseDir ? `${scope.baseDir}${PATH_SEPARATOR}` : "";
   const moudlePath = `${baseDir}${moduleName}`;
   return moudlePath;
 }

@@ -1,6 +1,7 @@
 interface GenerateOptions {
   baseDir?: string;
   runtimeModule?: string;
+  esModule?: boolean;
 }
 
 type CompilerOptions = GenerateOptions;

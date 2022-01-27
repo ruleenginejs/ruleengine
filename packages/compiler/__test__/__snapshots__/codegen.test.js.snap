@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`code generation $require 1`] = `
+exports[`generateCode $require 1`] = `
 "const {
   SingleStep,
   CompositeStep,
@@ -22,7 +22,22 @@ pipeline.add(singleStep_1);
 module.exports = pipeline;"
 `;
 
-exports[`code generation composite steps 1`] = `
+exports[`generateCode $require with es module 1`] = `
+"import handler_2 from \\"./fixtures/pipelines/./other-pipeline.js\\";
+import { SingleStep, CompositeStep, StartStep, EndStep, ErrorStep, Pipeline } from \\"runtimemodule\\";
+const pipeline = new Pipeline();
+const singleStep_1 = new SingleStep({
+  id: 1,
+  name: \\"Some step\\",
+  props: {
+    prop1: handler_2
+  }
+});
+pipeline.add(singleStep_1);
+export default pipeline;"
+`;
+
+exports[`generateCode composite steps 1`] = `
 "const {
   SingleStep,
   CompositeStep,
@@ -60,7 +75,7 @@ pipeline.add(startStep_1, endStep_2, compositeStep_3);
 module.exports = pipeline;"
 `;
 
-exports[`code generation composite substeps 1`] = `
+exports[`generateCode composite substeps 1`] = `
 "const {
   SingleStep,
   CompositeStep,
@@ -120,7 +135,7 @@ pipeline.add(startStep_1, endStep_2, compositeStep_3);
 module.exports = pipeline;"
 `;
 
-exports[`code generation empty 1`] = `
+exports[`generateCode empty 1`] = `
 "const {
   SingleStep,
   CompositeStep,
@@ -134,7 +149,7 @@ const pipeline = new Pipeline();
 module.exports = pipeline;"
 `;
 
-exports[`code generation step connections 1`] = `
+exports[`generateCode step connections 1`] = `
 "const requireFromString = require(\\"require-from-string\\");
 
 const {
@@ -178,7 +193,7 @@ pipeline.add(startStep_1, endStep_2, singleStep_3, singleStep_4);
 module.exports = pipeline;"
 `;
 
-exports[`code generation steps 1`] = `
+exports[`generateCode steps 1`] = `
 "const requireFromString = require(\\"require-from-string\\");
 
 const {
@@ -236,4 +251,56 @@ const singleStep_6 = new SingleStep({
 });
 pipeline.add(startStep_1, endStep_2, errorStep_3, singleStep_4, singleStep_5, singleStep_6);
 module.exports = pipeline;"
+`;
+
+exports[`generateCode steps with es module 1`] = `
+"import handler_6 from \\"./handler.js\\";
+import requireFromString from \\"require-from-string\\";
+import { SingleStep, CompositeStep, StartStep, EndStep, ErrorStep, Pipeline } from \\"runtimemodule\\";
+const pipeline = new Pipeline();
+const startStep_1 = new StartStep({
+  id: 1
+});
+const endStep_2 = new EndStep({
+  id: 2
+});
+const errorStep_3 = new ErrorStep({
+  id: 10
+});
+const singleStep_4 = new SingleStep({
+  id: 3,
+  name: \\"Some step\\",
+  handler: requireFromString(\\"module.exports = (context, next) => { next(); };\\"),
+  ports: {
+    in: [\\"p1\\", \\"p2\\"],
+    out: [\\"p3\\", \\"p4\\"]
+  },
+  props: {
+    prop1: true,
+    prop2: \\"str\\",
+    prop3: null,
+    prop4: 123,
+    prop5: [true, \\"str\\", 123, [\\"srt\\"]],
+    prop6: {
+      test1: 1,
+      test2: \\"str\\",
+      test3: null
+    }
+  }
+});
+const singleStep_5 = new SingleStep({
+  id: 4,
+  name: \\"Some step\\",
+  handler: handler_6,
+  ports: {
+    in: [\\"p1\\", \\"p2\\"],
+    out: [\\"p3\\", \\"p4\\"]
+  },
+  props: {}
+});
+const singleStep_7 = new SingleStep({
+  id: 11
+});
+pipeline.add(startStep_1, endStep_2, errorStep_3, singleStep_4, singleStep_5, singleStep_7);
+export default pipeline;"
 `;

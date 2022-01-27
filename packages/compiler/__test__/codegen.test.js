@@ -4,8 +4,10 @@ const path = require("path");
 const fixtures = path.join(__dirname, "fixtures");
 const pipelines = path.join(fixtures, "pipelines");
 
-describe("code generation", () => {
-  const genOpts = { runtimeModule: "runtimemodule" };
+describe("generateCode", () => {
+  const genOpts = {
+    runtimeModule: "runtimemodule"
+  };
 
   it("bad input", () => {
     const expectedErr = /input must be an object/;
@@ -18,7 +20,7 @@ describe("code generation", () => {
   });
 
   it("duplicate steps", () => {
-    expect(() => generateCode(getDefinition("duplicate-ids"))).toThrowError(/duplicate step identifiers/);
+    expect(() => generateCode(getDefinition("duplicate-ids"))).toThrowError(/duplicate step identifier/);
   });
 
   it("unknown type", () => {
@@ -74,6 +76,20 @@ describe("code generation", () => {
 
   it("composite substeps", () => {
     const code = generateCode(getDefinition("composite-recursive"), genOpts);
+    expect(code).toMatchSnapshot();
+  });
+
+  it("steps with es module", () => {
+    const code = generateCode(getDefinition("steps"), { ...genOpts, esModule: true });
+    expect(code).toMatchSnapshot();
+  });
+
+  it("$require with es module", () => {
+    const code = generateCode(getDefinition("$require"), {
+      ...genOpts,
+      baseDir: "./fixtures/pipelines",
+      esModule: true
+    });
     expect(code).toMatchSnapshot();
   });
 });
