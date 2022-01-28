@@ -7,4 +7,5 @@ interface GenerateOptions {
 type CompilerOptions = GenerateOptions;
 
 export function compile(input: Object, options?: CompilerOptions): any;
+
 export function generateCode(input: Object, options?: GenerateOptions): string;
