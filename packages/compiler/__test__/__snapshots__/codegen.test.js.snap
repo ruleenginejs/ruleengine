@@ -2,12 +2,8 @@
 
 exports[`generateCode $require 1`] = `
 "const {
-  SingleStep,
-  CompositeStep,
-  StartStep,
-  EndStep,
-  ErrorStep,
-  Pipeline
+  Pipeline,
+  SingleStep
 } = require(\\"runtimemodule\\");
 
 const pipeline = new Pipeline();
@@ -23,8 +19,8 @@ module.exports = pipeline;"
 `;
 
 exports[`generateCode $require with es module 1`] = `
-"import handler_2 from \\"./fixtures/pipelines/./other-pipeline.js\\";
-import { SingleStep, CompositeStep, StartStep, EndStep, ErrorStep, Pipeline } from \\"runtimemodule\\";
+"import { Pipeline, SingleStep } from \\"runtimemodule\\";
+import handler_2 from \\"./fixtures/pipelines/./other-pipeline.js\\";
 const pipeline = new Pipeline();
 const singleStep_1 = new SingleStep({
   id: 1,
@@ -39,12 +35,11 @@ export default pipeline;"
 
 exports[`generateCode composite steps 1`] = `
 "const {
-  SingleStep,
-  CompositeStep,
+  Pipeline,
   StartStep,
   EndStep,
-  ErrorStep,
-  Pipeline
+  CompositeStep,
+  SingleStep
 } = require(\\"runtimemodule\\");
 
 const pipeline = new Pipeline();
@@ -77,12 +72,11 @@ module.exports = pipeline;"
 
 exports[`generateCode composite substeps 1`] = `
 "const {
-  SingleStep,
-  CompositeStep,
+  Pipeline,
   StartStep,
   EndStep,
-  ErrorStep,
-  Pipeline
+  CompositeStep,
+  SingleStep
 } = require(\\"runtimemodule\\");
 
 const pipeline = new Pipeline();
@@ -137,11 +131,6 @@ module.exports = pipeline;"
 
 exports[`generateCode empty 1`] = `
 "const {
-  SingleStep,
-  CompositeStep,
-  StartStep,
-  EndStep,
-  ErrorStep,
   Pipeline
 } = require(\\"runtimemodule\\");
 
@@ -150,16 +139,14 @@ module.exports = pipeline;"
 `;
 
 exports[`generateCode step connections 1`] = `
-"const requireFromString = require(\\"require-from-string\\");
-
-const {
-  SingleStep,
-  CompositeStep,
+"const {
+  Pipeline,
   StartStep,
   EndStep,
-  ErrorStep,
-  Pipeline
+  SingleStep
 } = require(\\"runtimemodule\\");
+
+const requireFromString = require(\\"require-from-string\\");
 
 const pipeline = new Pipeline();
 const startStep_1 = new StartStep({
@@ -194,16 +181,15 @@ module.exports = pipeline;"
 `;
 
 exports[`generateCode steps 1`] = `
-"const requireFromString = require(\\"require-from-string\\");
-
-const {
-  SingleStep,
-  CompositeStep,
+"const {
+  Pipeline,
   StartStep,
   EndStep,
   ErrorStep,
-  Pipeline
+  SingleStep
 } = require(\\"runtimemodule\\");
+
+const requireFromString = require(\\"require-from-string\\");
 
 const pipeline = new Pipeline();
 const startStep_1 = new StartStep({
@@ -254,9 +240,9 @@ module.exports = pipeline;"
 `;
 
 exports[`generateCode steps with es module 1`] = `
-"import handler_6 from \\"./handler.js\\";
+"import { Pipeline, StartStep, EndStep, ErrorStep, SingleStep } from \\"runtimemodule\\";
+import handler_6 from \\"./handler.js\\";
 import requireFromString from \\"require-from-string\\";
-import { SingleStep, CompositeStep, StartStep, EndStep, ErrorStep, Pipeline } from \\"runtimemodule\\";
 const pipeline = new Pipeline();
 const startStep_1 = new StartStep({
   id: 1

@@ -21,15 +21,6 @@ const STEP_CLASS_BY_TYPE = {
   "composite": COMPOSITE_STEP_CLASS
 };
 
-const IMPORT_CLASSES = [
-  SINGLE_STEP_CLASS,
-  COMPOSITE_STEP_CLASS,
-  START_STEP_CLASS,
-  END_STEP_CLASS,
-  ERROR_STEP_CLASS,
-  PIPELINE_CLASS
-];
-
 function generateAst(input, options = {}) {
   if (kindOf(input) !== "object") {
     throw new TypeError("input must be an object");
@@ -44,18 +35,21 @@ function generateAst(input, options = {}) {
     global: statements,
     dep: {},
     baseDir: options.baseDir,
-    esModule: options.esModule
+    esModule: options.esModule,
+    importClasses: new Set([PIPELINE_CLASS])
   };
-
-  if (options.runtimeModule) {
-    const importFn = options.esModule ? generateImport : generateRequire;
-    statements.push(importFn(IMPORT_CLASSES, options.runtimeModule));
-  }
 
   statements.push(generateNewInstance(PIPELINE_VAR, PIPELINE_CLASS));
 
   if (Array.isArray(input.steps)) {
     statements.push.apply(statements, generateSteps(input.steps, scope));
+  }
+
+  if (options.runtimeModule && scope.importClasses.size > 0) {
+    if (options.runtimeModule) {
+      const importFn = options.esModule ? generateImport : generateRequire;
+      statements.unshift(importFn(Array.from(scope.importClasses), options.runtimeModule));
+    }
   }
 
   const exportFn = options.esModule ? generateDefaultExport : generateModuleExport;
@@ -198,7 +192,8 @@ function generateNewInstancesOfSteps(steps, scope) {
 }
 
 function generateNewInstanceOfStep(step, scope) {
-  if (!STEP_CLASS_BY_TYPE[step.type]) {
+  const stepClass = STEP_CLASS_BY_TYPE[step.type];
+  if (!stepClass) {
     throw new Error(`unknown step type: ${step.type}`);
   }
 
@@ -206,7 +201,8 @@ function generateNewInstanceOfStep(step, scope) {
   addStepVar(step.id, uVar, scope);
 
   const opts = generateStepOptions(step, scope);
-  return generateNewInstance(uVar, STEP_CLASS_BY_TYPE[step.type], opts ? [opts] : []);
+  scope.importClasses.add(stepClass);
+  return generateNewInstance(uVar, stepClass, opts ? [opts] : []);
 }
 
 function addStepVar(stepId, varName, scope) {
@@ -275,6 +271,7 @@ function generateStepHandlerFromModule(step, scope) {
   if (scope.esModule) {
     const varName = generateUniqueName("handler", scope);
     addDepModule(varName, getModulePath(step.handlerFile, scope), scope);
+
     return t.objectProperty(
       t.identifier("handler"),
       t.identifier(varName)
@@ -400,13 +397,10 @@ function generateCompositeSteps(steps, scope) {
 }
 
 function generateCompositeSubSteps(compositeStep, substeps, scope) {
-  const compositeScope = {
+  const compositeScope = Object.assign({}, scope, {
     parentScope: scope,
-    uniqueCounter: scope.uniqueCounter,
-    stepVars: {},
-    global: scope.global,
-    dep: scope.dep
-  };
+    stepVars: {}
+  });
 
   const statements = [];
   statements.push.apply(statements, generateNewInstancesOfSteps(substeps, compositeScope));
