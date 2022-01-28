@@ -1,6 +1,6 @@
 {
   "name": "@ruleenginejs/schema",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Rule engine schema",
   "main": "index.js",
   "types": "index.d.ts",
