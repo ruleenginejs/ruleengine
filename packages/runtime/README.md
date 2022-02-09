@@ -32,8 +32,7 @@ step.connectTo(end);
 pipeline.add(start, end, step);
 
 const context = {};
-
-await pipeline.execute(context);
+pipeline.execute(context).catch(e => console.error(e));
 ```
 
 ## Documentation
