@@ -1,6 +1,6 @@
 {
   "name": "@ruleenginejs/runtime",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Rule engine runtime",
   "main": "index.js",
   "types": "index.d.ts",
