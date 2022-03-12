@@ -9,12 +9,12 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@ruleenginejs/debug": "^1.0.2",
+    "@ruleenginejs/debug": "^1.0.4",
     "http-errors": "^2.0.0",
     "kind-of": "^6.0.3"
   },
   "devDependencies": {
-    "@ruleenginejs/runtime": "^1.0.2",
+    "@ruleenginejs/runtime": "^1.0.4",
     "supertest": "^6.2.2"
   },
   "repository": {
