@@ -18,7 +18,7 @@ type PlainObject = Record<string, unknown>;
 interface StepOptions {
   id?: StepId;
   name?: string;
-  handler: HandlerFunction;
+  handler?: HandlerFunction;
   ports?: { in?: Array<string>, out?: Array<string> };
   props?: PlainObject;
 }
