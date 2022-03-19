@@ -9,13 +9,13 @@ export interface NextFunction {
   (portOrError?: string | Error): void;
 }
 
-type StepId = string | number;
+export type StepId = string | number;
 
-type Context = Object;
+export type Context = Object;
 
-type PlainObject = Record<string, unknown>;
+export type PlainObject = Record<string, unknown>;
 
-interface StepOptions {
+export interface StepOptions {
   id?: StepId;
   name?: string;
   handler?: HandlerFunction;
@@ -23,7 +23,7 @@ interface StepOptions {
   props?: PlainObject;
 }
 
-interface ConnectionDefinition {
+export interface ConnectionDefinition {
   stepId: StepId;
   srcOutPort: string;
   dstInPort: string;
@@ -50,7 +50,7 @@ export interface Step {
   getConnection(srcOutPort?: string): ConnectionDefinition;
 }
 
-interface StepConstructor<T extends Step = Step> {
+export interface StepConstructor<T extends Step = Step> {
   new(options?: StepOptions): T;
 
   newId(): number;
@@ -87,11 +87,11 @@ export interface CompositeStep extends Step {
   getStep(stepId: StepId): Step | null;
 }
 
-type ErrorStepConstructor = StepConstructor<ErrorStep>;
-type StartStepConstructor = StepConstructor<StartStep>;
-type EndStepConstructor = StepConstructor<EndStep>;
-type SingleStepConstructor = StepConstructor<SingleStep>;
-type CompositeStepConstructor = StepConstructor<CompositeStep>;
+export type ErrorStepConstructor = StepConstructor<ErrorStep>;
+export type StartStepConstructor = StepConstructor<StartStep>;
+export type EndStepConstructor = StepConstructor<EndStep>;
+export type SingleStepConstructor = StepConstructor<SingleStep>;
+export type CompositeStepConstructor = StepConstructor<CompositeStep>;
 
 export const ErrorStep: ErrorStepConstructor;
 export const StartStep: StartStepConstructor;
@@ -99,7 +99,7 @@ export const EndStep: EndStepConstructor;
 export const SingleStep: SingleStepConstructor;
 export const CompositeStep: CompositeStepConstructor;
 
-interface EventEmmiter {
+export interface EventEmmiter {
   on(eventName: string | symbol, listener: (...args: any[]) => void): this;
   once(eventName: string | symbol, listener: (...args: any[]) => void): this;
   off(eventName: string | symbol, listener: (...args: any[]) => void): this;
@@ -113,15 +113,15 @@ export interface Pipeline extends EventEmmiter {
   add(...steps: Step[]): this;
   remove(stepOrId: Step | StepId): this;
   getStep(stepId: StepId): Step | null;
-  execute(context?: Context): Promise<Context>;
+  execute<T extends Context = Context>(context?: T): Promise<T>;
   createExecutor(): StepExecutor;
 }
 
-interface PipelineOptions {
+export interface PipelineOptions {
   stepExecutor?: StepExecutor;
 }
 
-interface PipelineConstructor<T = Pipeline> {
+export interface PipelineConstructor<T = Pipeline> {
   new(options?: PipelineOptions): T;
 }
 
@@ -129,7 +129,7 @@ export interface StepExecutor extends EventEmmiter {
   start(context: Context): Promise<Context>;
 }
 
-interface StepExecutorConstructor<T = StepExecutor> {
+export interface StepExecutorConstructor<T = StepExecutor> {
   new(startStep: Step | null, errorStep: Step | null, steps: Record<StepId, Step>): T;
 }
 
