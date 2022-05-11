@@ -1,9 +1,9 @@
-const EventEmmiter = require("events");
-const { StepExecutorError } = require("./errors");
+const EventEmmiter = require('events');
+const { StepExecutorError } = require('./errors');
 
-const STEP_BEGIN = "step_begin";
-const STEP_END = "step_end";
-const STEP_ERROR = "step_error";
+const STEP_BEGIN = 'step_begin';
+const STEP_END = 'step_end';
+const STEP_ERROR = 'step_error';
 
 class StepExecutor extends EventEmmiter {
   constructor(startStep, errorStep, steps) {
@@ -15,8 +15,8 @@ class StepExecutor extends EventEmmiter {
   }
 
   async start(context) {
-    if (!(typeof context === "object" && context !== null)) {
-      throw new TypeError("context arg must be object");
+    if (!(typeof context === 'object' && context !== null)) {
+      throw new TypeError('context arg must be object');
     }
 
     if (!this.startStep) {
@@ -32,21 +32,31 @@ class StepExecutor extends EventEmmiter {
 
   async _handleError(context, error) {
     if (!this.errorStep) {
-      throw new StepExecutorError("step execution error", error);
+      throw new StepExecutorError('step execution error', error);
     }
 
     try {
       return await this._beginStep(this.errorStep, this.steps, context, error);
     } catch (e) {
-      throw new StepExecutorError("step execution error", error, e);
+      throw new StepExecutorError('step execution error', error, e);
     }
   }
 
   async _beginStep(startStep, steps, context, error = null) {
-    const [nextStep, prevStep] = await this._handleSteps(startStep, "default", steps, context, error);
+    const [nextStep, prevStep] = await this._handleSteps(
+      startStep,
+      'default',
+      steps,
+      context,
+      error
+    );
 
-    if (prevStep && prevStep[0] && prevStep[0].type !== "end") {
-      throw Error(`no end step: step_id(${prevStep[0].id}), out_port(${(nextStep ? nextStep[2] : null)})`);
+    if (prevStep && prevStep[0] && prevStep[0].type !== 'end') {
+      throw Error(
+        `no end step: step_id(${prevStep[0].id}), out_port(${
+          nextStep ? nextStep[2] : null
+        })`
+      );
     }
 
     return context;
@@ -66,10 +76,10 @@ class StepExecutor extends EventEmmiter {
       } catch (e) {
         this._emitStepError(nextStep[0], e);
 
-        nextStep = this._handleErrorStep(nextStep[0], "error", steps, e);
+        nextStep = this._handleErrorStep(nextStep[0], 'error', steps, e);
         error = e;
       } finally {
-        this._emitStepEnd(prevStep[0], nextStep ? nextStep[2] : "default");
+        this._emitStepEnd(prevStep[0], nextStep ? nextStep[2] : 'default');
       }
     }
 
@@ -77,32 +87,36 @@ class StepExecutor extends EventEmmiter {
   }
 
   async _nextStep([step, inPort], steps, context, error) {
-    if (step.type === "start" || step.type === "error") {
-      return this._getNextStep(step, steps, "default");
+    if (step.type === 'start' || step.type === 'error') {
+      return this._getNextStep(step, steps, 'default');
     }
 
-    if (step.type === "end") {
+    if (step.type === 'end') {
       return null;
     }
 
     if (!step.inPortEnabled(inPort)) {
-      throw new Error(`in port is disabled: step_id(${ step.id }), in_port(${ inPort })`);
+      throw new Error(
+        `in port is disabled: step_id(${step.id}), in_port(${inPort})`
+      );
     }
 
     let srcOutPort;
 
-    if (step.type === "composite") {
+    if (step.type === 'composite') {
       srcOutPort = await this._handleComposite(step, inPort, context, error);
     } else {
       srcOutPort = await this._handleStep(step, inPort, context, error);
     }
 
     if (!srcOutPort) {
-      srcOutPort = "default";
+      srcOutPort = 'default';
     }
 
     if (!step.outPortEnabled(srcOutPort)) {
-      throw new Error(`out port is disabled: step_id(${ step.id }), out_port(${ srcOutPort })`);
+      throw new Error(
+        `out port is disabled: step_id(${step.id}), out_port(${srcOutPort})`
+      );
     }
 
     return this._getNextStep(step, steps, srcOutPort);
@@ -147,14 +161,34 @@ class StepExecutor extends EventEmmiter {
       throw new Error(`composite step has no end step: step_id(${step.id})`);
     }
 
-    return this._beginCompositeStep(step.startStep, step.endStep, step.steps, inPort, context, error);
+    return this._beginCompositeStep(
+      step.startStep,
+      step.endStep,
+      step.steps,
+      inPort,
+      context,
+      error
+    );
   }
 
-  async _beginCompositeStep(startStep, endStep, steps, inPort, context, error = null) {
-    const [nextStep, prevStep] = await this._handleSteps(startStep, inPort, steps, context, error);
+  async _beginCompositeStep(
+    startStep,
+    endStep,
+    steps,
+    inPort,
+    context,
+    error = null
+  ) {
+    const [nextStep, prevStep] = await this._handleSteps(
+      startStep,
+      inPort,
+      steps,
+      context,
+      error
+    );
 
     if (prevStep && prevStep[0] !== endStep) {
-      throw Error("last step is not the end step of the composite");
+      throw Error('last step is not the end step of the composite');
     }
 
     return nextStep ? nextStep[2] : null;
@@ -174,7 +208,12 @@ class StepExecutor extends EventEmmiter {
     } else if (argc === 4) {
       return this._callHandler(step.handler, [context, inPort, step.props]);
     } else if (argc === 5) {
-      return this._callHandler(step.handler, [error, context, inPort, step.props]);
+      return this._callHandler(step.handler, [
+        error,
+        context,
+        inPort,
+        step.props
+      ]);
     } else {
       return null;
     }
@@ -185,7 +224,7 @@ class StepExecutor extends EventEmmiter {
       const next = (portOrError = null) => {
         if (portOrError instanceof Error) {
           reject(portOrError);
-        } else if (typeof portOrError === "string") {
+        } else if (typeof portOrError === 'string') {
           resolve(portOrError);
         } else {
           resolve(null);

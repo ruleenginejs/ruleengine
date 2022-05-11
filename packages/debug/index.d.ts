@@ -22,6 +22,10 @@ declare namespace createDebug {
   export { pipelineDebug };
 }
 
-declare function pipelineDebug(name: string | null, pipeline: EventablePipeline, log: Logger): PipelineDebugger;
+declare function pipelineDebug(
+  name: string | null,
+  pipeline: EventablePipeline,
+  log: Logger
+): PipelineDebugger;
 
 export = createDebug;

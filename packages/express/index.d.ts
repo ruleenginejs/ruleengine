@@ -30,11 +30,18 @@ interface PipelineInstance {
 }
 
 interface RuleFactory {
-  (req: ExpressRequest, res: ExpressResponse, id: string | number | null | undefined): PipelineInstance;
+  (
+    req: ExpressRequest,
+    res: ExpressResponse,
+    id: string | number | null | undefined
+  ): PipelineInstance;
 }
 
 type Rules = Record<string, PipelineInstance> | RuleFactory;
 
-declare function ruleEngine(rules: Rules, options?: MiddlewareOptions): AsyncExpressMiddleware;
+declare function ruleEngine(
+  rules: Rules,
+  options?: MiddlewareOptions
+): AsyncExpressMiddleware;
 
 export = ruleEngine;

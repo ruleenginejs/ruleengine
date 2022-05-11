@@ -1,53 +1,53 @@
-const createError = require("http-errors");
-const debug = require("@ruleenginejs/debug");
-const kindOf = require("kind-of");
+const createError = require('http-errors');
+const debug = require('@ruleenginejs/debug');
+const kindOf = require('kind-of');
 
 module.exports = ruleEngine;
 
 function ruleEngine(rules, options) {
   const opts = options || {};
 
-  if (kindOf(rules) !== "object" && typeof rules !== "function") {
-    throw new TypeError("Rules argument must be an object or function");
+  if (kindOf(rules) !== 'object' && typeof rules !== 'function') {
+    throw new TypeError('Rules argument must be an object or function');
   }
 
   let idParam;
-  if (typeof opts.idParam === "string") {
+  if (typeof opts.idParam === 'string') {
     idParam = opts.idParam;
   } else {
-    idParam = "id";
+    idParam = 'id';
   }
 
   let isDebug;
-  if (typeof opts.debug === "boolean") {
+  if (typeof opts.debug === 'boolean') {
     isDebug = opts.debug;
   } else {
     isDebug = false;
   }
 
   let logger;
-  if (typeof opts.logger === "function") {
+  if (typeof opts.logger === 'function') {
     logger = opts.logger;
   } else {
     logger = null;
   }
 
   let debugNamespace;
-  if (typeof opts.debugNamespace === "string") {
+  if (typeof opts.debugNamespace === 'string') {
     debugNamespace = opts.debugNamespace;
   } else {
-    debugNamespace = "ruleengine";
+    debugNamespace = 'ruleengine';
   }
 
   let context;
-  if (typeof opts.context === "function") {
+  if (typeof opts.context === 'function') {
     context = opts.context;
   } else {
     context = (req, res) => ({ req, res, data: {} });
   }
 
   let rulesFn;
-  if (typeof rules === "function") {
+  if (typeof rules === 'function') {
     rulesFn = rules;
   } else {
     rulesFn = null;
@@ -80,5 +80,5 @@ function ruleEngine(rules, options) {
         log.destroy();
       }
     }
-  }
+  };
 }

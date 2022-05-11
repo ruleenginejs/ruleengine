@@ -1,5 +1,5 @@
-const generateAst = require("./astgen");
-const generate = require("@babel/generator").default;
+const generateAst = require('./astgen');
+const generate = require('@babel/generator').default;
 
 function generateCode(input, options = {}) {
   const ast = generateAst(input, options);

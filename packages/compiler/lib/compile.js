@@ -1,5 +1,5 @@
-const codegen = require("./codegen");
-const requireFromString = require("require-from-string");
+const codegen = require('./codegen');
+const requireFromString = require('require-from-string');
 
 function compile(input, options = {}) {
   return requireFromString(codegen(input, options));

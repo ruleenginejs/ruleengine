@@ -1,9 +1,9 @@
-const Step = require("./step");
+const Step = require('./step');
 
 class SingleStep extends Step {
   constructor(options = {}) {
     super(options);
-    this.type = "single";
+    this.type = 'single';
   }
 }
 

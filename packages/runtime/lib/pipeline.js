@@ -1,10 +1,10 @@
-const EventEmmiter = require("events");
-const Step = require("./step");
-const StepExecutor = require("./executor");
+const EventEmmiter = require('events');
+const Step = require('./step');
+const StepExecutor = require('./executor');
 
-const EXECUTE_START = "execute_start";
-const EXECUTE_ERROR = "execute_error";
-const EXECUTE_END = "execute_end";
+const EXECUTE_START = 'execute_start';
+const EXECUTE_ERROR = 'execute_error';
+const EXECUTE_END = 'execute_end';
 
 class Pipeline extends EventEmmiter {
   constructor(options = {}) {
@@ -14,7 +14,7 @@ class Pipeline extends EventEmmiter {
       options = {};
     }
 
-    if (typeof options.stepExecutor === "function") {
+    if (typeof options.stepExecutor === 'function') {
       this.stepExecutor = options.stepExecutor;
     } else {
       this.stepExecutor = StepExecutor;
@@ -29,11 +29,12 @@ class Pipeline extends EventEmmiter {
     for (const step of steps) {
       if (!(step instanceof Step)) {
         throw new TypeError(
-          "step must be instance of children class parent of Step");
+          'step must be instance of children class parent of Step'
+        );
       }
-      if (step.type === "start") {
+      if (step.type === 'start') {
         this.startStep = step;
-      } else if (step.type === "error") {
+      } else if (step.type === 'error') {
         this.errorStep = step;
       }
       this.steps[step.id] = step;

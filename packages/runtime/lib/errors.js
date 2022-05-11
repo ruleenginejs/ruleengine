@@ -3,10 +3,10 @@ class StepExecutorError extends Error {
     super(message);
     this.cause = cause;
     this.inner = inner;
-    this.name = "StepExecutorError";
+    this.name = 'StepExecutorError';
   }
 }
 
 module.exports = {
   StepExecutorError
-}
+};

@@ -2,7 +2,13 @@ export interface HandlerFunction<T = Context> {
   (context: T, next: NextFunction): void;
   (context: T, port: string, next: NextFunction): void;
   (context: T, port: string, props: PlainObject, next: NextFunction): void;
-  (err: Error, context: T, port: string, props: PlainObject, next: NextFunction): void;
+  (
+    err: Error,
+    context: T,
+    port: string,
+    props: PlainObject,
+    next: NextFunction
+  ): void;
 }
 
 export interface NextFunction {
@@ -19,7 +25,7 @@ export interface StepOptions {
   id?: StepId;
   name?: string;
   handler?: HandlerFunction;
-  ports?: { in?: Array<string>, out?: Array<string> };
+  ports?: { in?: Array<string>; out?: Array<string> };
   props?: PlainObject;
 }
 
@@ -33,7 +39,7 @@ export interface Step {
   readonly id: number;
   readonly name: string | null;
   readonly handler: HandlerFunction | null;
-  readonly ports: { in: Record<string, boolean>, out: Record<string, boolean> }
+  readonly ports: { in: Record<string, boolean>; out: Record<string, boolean> };
   readonly type: string | null;
   readonly props: PlainObject;
   readonly connections: { [srcOutPort: string]: ConnectionDefinition };
@@ -46,12 +52,16 @@ export interface Step {
   outPortEnabled(port: string): boolean;
   hasInPort(port: string): boolean;
   hasOutPort(port: string): boolean;
-  connectTo(stepOrId: Step | StepId, srcOutPort?: string, dstInPort?: string): void;
+  connectTo(
+    stepOrId: Step | StepId,
+    srcOutPort?: string,
+    dstInPort?: string
+  ): void;
   getConnection(srcOutPort?: string): ConnectionDefinition;
 }
 
 export interface StepConstructor<T extends Step = Step> {
-  new(options?: StepOptions): T;
+  new (options?: StepOptions): T;
 
   newId(): number;
 }
@@ -122,7 +132,7 @@ export interface PipelineOptions {
 }
 
 export interface PipelineConstructor<T = Pipeline> {
-  new(options?: PipelineOptions): T;
+  new (options?: PipelineOptions): T;
 }
 
 export interface StepExecutor extends EventEmmiter {
@@ -130,7 +140,11 @@ export interface StepExecutor extends EventEmmiter {
 }
 
 export interface StepExecutorConstructor<T = StepExecutor> {
-  new(startStep: Step | null, errorStep: Step | null, steps: Record<StepId, Step>): T;
+  new (
+    startStep: Step | null,
+    errorStep: Step | null,
+    steps: Record<StepId, Step>
+  ): T;
 }
 
 export const Pipeline: PipelineConstructor;

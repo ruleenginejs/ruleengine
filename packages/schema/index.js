@@ -1,12 +1,13 @@
-const Ajv = require("ajv").default;
-const addFormats = require("ajv-formats").default;
+const Ajv = require('ajv').default;
+const addFormats = require('ajv-formats').default;
 
 const SCHEMA_IDS = Object.freeze({
-  PIPELINE: "https://github.com/ruleenginejs/ruleengine/blob/master/packages/schema/schema/pipeline-schema.json"
+  PIPELINE:
+    'https://github.com/ruleenginejs/ruleengine/blob/master/packages/schema/schema/pipeline-schema.json'
 });
 
 const SCHEMA_FILES = {
-  [SCHEMA_IDS.PIPELINE]: require("./schema/pipeline-schema.json"),
+  [SCHEMA_IDS.PIPELINE]: require('./schema/pipeline-schema.json')
 };
 
 function schema(schemaId, options) {

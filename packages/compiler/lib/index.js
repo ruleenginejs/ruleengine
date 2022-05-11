@@ -1,5 +1,5 @@
-const codegen = require("./codegen");
-const compile = require("./compile");
+const codegen = require('./codegen');
+const compile = require('./compile');
 
 module.exports = {
   compile,

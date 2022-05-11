@@ -1,12 +1,12 @@
-const debug = require("debug")
+const debug = require('debug');
 
-const EXECUTE_START = "execute_start";
-const EXECUTE_END = "execute_end";
-const EXECUTE_ERROR = "execute_error";
+const EXECUTE_START = 'execute_start';
+const EXECUTE_END = 'execute_end';
+const EXECUTE_ERROR = 'execute_error';
 
-const STEP_BEGIN = "step_begin";
-const STEP_END = "step_end";
-const STEP_ERROR = "step_error";
+const STEP_BEGIN = 'step_begin';
+const STEP_END = 'step_end';
+const STEP_ERROR = 'step_error';
 
 module.exports = createDebug;
 module.exports.pipelineDebug = pipelineDebug;
@@ -18,9 +18,9 @@ function pipelineDebug(name, pipeline, log) {
 
   function _log(message) {
     if (name) {
-      log(`[pipeline ${name}] ${message}`)
+      log(`[pipeline ${name}] ${message}`);
     } else {
-      log(`[pipeline] ${message}`)
+      log(`[pipeline] ${message}`);
     }
   }
 
@@ -39,12 +39,14 @@ function pipelineDebug(name, pipeline, log) {
   }
 
   function _logStep(prefix, step, inPort, outPort) {
-    const _name = step.name ? `name(${step.name}), ` : "";
-    const _inPort = inPort !== undefined ? `in_port(${inPort}), ` : "";
-    const _outPort = outPort !== undefined ? `out_port(${outPort}), ` : "";
+    const _name = step.name ? `name(${step.name}), ` : '';
+    const _inPort = inPort !== undefined ? `in_port(${inPort}), ` : '';
+    const _outPort = outPort !== undefined ? `out_port(${outPort}), ` : '';
     const _props = JSON.stringify(step.props);
 
-    _log(`${prefix} id(${step.id}), ${_name}${_inPort}${_outPort}type(${step.type}), props(${_props})`);
+    _log(
+      `${prefix} id(${step.id}), ${_name}${_inPort}${_outPort}type(${step.type}), props(${_props})`
+    );
   }
 
   function _attach(pipeline) {
@@ -101,30 +103,30 @@ function pipelineDebug(name, pipeline, log) {
   }
 
   function _executeEnd() {
-    _log("end execute");
+    _log('end execute');
     _destroyExecutor();
   }
 
   function _executeError(executer, err) {
-    _logError("execute error", err);
+    _logError('execute error', err);
   }
 
   function _stepBegin(step, inPort) {
-    _logStep("step begin:", step, inPort);
+    _logStep('step begin:', step, inPort);
   }
 
   function _stepEnd(step, outPort) {
-    _logStep("step end:  ", step, undefined, outPort);
+    _logStep('step end:  ', step, undefined, outPort);
   }
 
   function _stepError(step, err) {
-    _logError("step error", err);
+    _logError('step error', err);
   }
 
   return {
     log: _log,
     destroy: _destroy
-  }
+  };
 }
 
 function createDebug(namespace, logger) {

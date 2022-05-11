@@ -3,9 +3,9 @@ const {
   StartStep,
   EndStep,
   SingleStep
-} = require("@ruleenginejs/runtime");
+} = require('@ruleenginejs/runtime');
 
-const dbUsers = require("./db/users.json");
+const dbUsers = require('./db/users.json');
 
 const pipeline = new Pipeline();
 const start = new StartStep();
@@ -23,7 +23,7 @@ const respStep = new SingleStep({
     next();
   },
   props: {
-    dataKey: "users"
+    dataKey: 'users'
   }
 });
 

@@ -1,9 +1,9 @@
-const Step = require("./step");
+const Step = require('./step');
 
 class CompositeStep extends Step {
   constructor(options = {}) {
     super(options);
-    this.type = "composite";
+    this.type = 'composite';
     this.startStep = null;
     this.endStep = null;
     this.steps = {};
@@ -12,7 +12,8 @@ class CompositeStep extends Step {
   _checkStep(step) {
     if (!(step instanceof Step)) {
       throw new TypeError(
-        "step must be instance of children class parent of Step");
+        'step must be instance of children class parent of Step'
+      );
     }
   }
 

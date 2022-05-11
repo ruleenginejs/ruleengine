@@ -8,31 +8,31 @@ class Step {
 
     if (id === null || id === undefined) {
       this.id = Step.newId();
-    } else if (typeof id === "string" || typeof id === "number") {
+    } else if (typeof id === 'string' || typeof id === 'number') {
       this.id = id;
     } else {
-      throw new TypeError("id must be string or number");
+      throw new TypeError('id must be string or number');
     }
 
     if (name === null || name === undefined) {
       this.name = null;
-    } else if (typeof name === "string") {
+    } else if (typeof name === 'string') {
       this.name = name;
     } else {
-      throw new TypeError("name must be string");
+      throw new TypeError('name must be string');
     }
 
     if (handler === null || handler === undefined) {
       this.handler = null;
-    } else if (typeof handler === "function") {
+    } else if (typeof handler === 'function') {
       this.handler = handler;
     } else {
-      throw new TypeError("handler expected must be function");
+      throw new TypeError('handler expected must be function');
     }
 
     this.ports = {
-      in: { "default": true },
-      out: { "default": true }
+      in: { default: true },
+      out: { default: true }
     };
 
     if (ports) {
@@ -48,18 +48,18 @@ class Step {
   _addPorts(direction, portArray) {
     if (Array.isArray(portArray)) {
       portArray.forEach(port => {
-        if (typeof port === "string") {
+        if (typeof port === 'string') {
           this.ports[direction][port] = true;
         } else {
-          throw new TypeError("port name must be string");
+          throw new TypeError('port name must be string');
         }
       });
     }
   }
 
   _enablePort(direction, port, value) {
-    if (typeof value !== "boolean") {
-      throw new TypeError("value arg must be boolean");
+    if (typeof value !== 'boolean') {
+      throw new TypeError('value arg must be boolean');
     }
     if (port in this.ports[direction]) {
       this.ports[direction][port] = value;
@@ -81,14 +81,14 @@ class Step {
   }
 
   _checkId(id) {
-    if (typeof id !== "string" && typeof id !== "number") {
-      throw new TypeError("id must be string or number");
+    if (typeof id !== 'string' && typeof id !== 'number') {
+      throw new TypeError('id must be string or number');
     }
   }
 
   _checkPort(direction, port) {
-    if (typeof port !== "string") {
-      throw new TypeError("port name must be string");
+    if (typeof port !== 'string') {
+      throw new TypeError('port name must be string');
     }
     if (!(port in this.ports[direction])) {
       throw new Error(`port name doesn't exists: ${port}`);
@@ -96,35 +96,35 @@ class Step {
   }
 
   addInPorts(portArray) {
-    this._addPorts("in", portArray);
+    this._addPorts('in', portArray);
   }
 
   addOutPorts(portArray) {
-    this._addPorts("out", portArray);
+    this._addPorts('out', portArray);
   }
 
   enableInPort(port, value) {
-    this._enablePort("in", port, value);
+    this._enablePort('in', port, value);
   }
 
   enableOutPort(port, value) {
-    this._enablePort("out", port, value);
+    this._enablePort('out', port, value);
   }
 
   inPortEnabled(port) {
-    return this._portEnabled("in", port);
+    return this._portEnabled('in', port);
   }
 
   outPortEnabled(port) {
-    return this._portEnabled("out", port);
+    return this._portEnabled('out', port);
   }
 
   hasInPort(port) {
-    return this._hasPort("in", port);
+    return this._hasPort('in', port);
   }
 
   hasOutPort(port) {
-    return this._hasPort("out", port);
+    return this._hasPort('out', port);
   }
 
   connectTo(stepOrId, srcOutPort = null, dstInPort = null) {
@@ -138,17 +138,17 @@ class Step {
     }
 
     if (srcOutPort === null || srcOutPort === undefined) {
-      srcOutPort = "default";
+      srcOutPort = 'default';
     }
 
     if (dstInPort === null || dstInPort === undefined) {
-      dstInPort = "default";
+      dstInPort = 'default';
     }
 
-    this._checkPort("out", srcOutPort);
+    this._checkPort('out', srcOutPort);
 
     if (stepOrId instanceof Step) {
-      stepOrId._checkPort("in", dstInPort);
+      stepOrId._checkPort('in', dstInPort);
     }
 
     this.connections[srcOutPort] = {
@@ -160,10 +160,10 @@ class Step {
 
   getConnection(srcOutPort) {
     if (srcOutPort === null || srcOutPort === undefined) {
-      srcOutPort = "default";
+      srcOutPort = 'default';
     }
 
-    this._checkPort("out", srcOutPort);
+    this._checkPort('out', srcOutPort);
 
     if (!(srcOutPort in this.connections)) {
       return null;

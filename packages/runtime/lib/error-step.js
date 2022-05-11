@@ -1,9 +1,9 @@
-const Step = require("./step");
+const Step = require('./step');
 
 class ErrorStep extends Step {
   constructor(options = {}) {
     super(options);
-    this.type = "error";
+    this.type = 'error';
   }
 }
 
