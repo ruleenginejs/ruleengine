@@ -6,20 +6,31 @@
   ],
   "scripts": {
     "test": "jest",
+    "format": "prettier --write \"packages/**/*.{js,ts}\"",
+    "lint": "eslint \"packages/**/*.js\" --fix",
     "patch": "npm run workspaces-patch && npm version patch",
     "workspaces-patch": "npm version --workspaces --git-tag-version=false patch && npm run commit",
     "commit": "git add packages/* && git commit -m \"Update workspace versions\"",
     "postversion": "npm run push",
-    "push": "git push origin master --tags"
+    "push": "git push origin master --tags",
+    "prepare": "husky install"
   },
   "license": "MIT",
   "devDependencies": {
+    "@commitlint/cli": "^16.2.4",
+    "@commitlint/config-angular": "^16.2.4",
     "@types/events": "^3.0.0",
     "@types/jest": "^27.5.0",
     "@types/node": "^17.0.32",
     "eslint": "^8.15.0",
     "eslint-plugin-jest": "^26.1.5",
     "eslint-plugin-node": "^11.1.0",
-    "jest": "^28.1.0"
+    "husky": "^8.0.1",
+    "jest": "^28.1.0",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2"
+  },
+  "lint-staged": {
+    "*.js": "prettier --write"
   }
 }
