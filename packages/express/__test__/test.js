@@ -86,6 +86,7 @@ describe('ruleengine()', () => {
       const server = createServer(
         rules,
         { debug: true, logger },
+        // eslint-disable-next-line no-unused-vars
         (req, res) => {
           req.params = { id: path.basename(req.url) };
         }
