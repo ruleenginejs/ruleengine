@@ -9,13 +9,13 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@ruleenginejs/debug": "^1.0.4",
+    "@ruleenginejs/debug": "^1.0.5",
     "http-errors": "^2.0.0",
     "kind-of": "^6.0.3"
   },
   "devDependencies": {
-    "@ruleenginejs/runtime": "^1.0.4",
-    "supertest": "^6.2.2"
+    "@ruleenginejs/runtime": "^1.0.5",
+    "supertest": "^6.2.3"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,9 @@
     "directory": "packages/express"
   },
   "keywords": [
-    "ruleengine"
+    "ruleengine",
+    "express",
+    "middleware"
   ],
   "author": "Nikolay Naumenkov",
   "license": "MIT",

@@ -9,10 +9,10 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "debug": "^4.3.3"
+    "debug": "^4.3.4"
   },
   "devDependencies": {
-    "@ruleenginejs/runtime": "^1.0.4"
+    "@ruleenginejs/runtime": "^1.0.5"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
     "directory": "packages/debug"
   },
   "keywords": [
-    "ruleengine"
+    "ruleengine",
+    "debug"
   ],
   "author": "Nikolay Naumenkov",
   "license": "MIT",

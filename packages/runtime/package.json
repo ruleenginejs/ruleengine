@@ -15,7 +15,8 @@
     "directory": "packages/runtime"
   },
   "keywords": [
-    "ruleengine"
+    "ruleengine",
+    "runtime"
   ],
   "author": "Nikolay Naumenkov",
   "license": "MIT",
