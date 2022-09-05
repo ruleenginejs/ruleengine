@@ -10,8 +10,8 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@babel/generator": "^7.17.10",
-    "@babel/types": "^7.17.10",
+    "@babel/generator": "^7.18.13",
+    "@babel/types": "^7.18.13",
     "kind-of": "^6.0.3",
     "require-from-string": "^2.0.2"
   },

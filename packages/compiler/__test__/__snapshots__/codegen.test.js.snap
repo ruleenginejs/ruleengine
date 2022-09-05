@@ -4,14 +4,14 @@ exports[`generateCode $require 1`] = `
 "const {
   Pipeline,
   SingleStep
-} = require(\\"runtimemodule\\");
+} = require("runtimemodule");
 
 const pipeline = new Pipeline();
 const singleStep_1 = new SingleStep({
   id: 1,
-  name: \\"Some step\\",
+  name: "Some step",
   props: {
-    prop1: require(\\"./fixtures/pipelines/./other-pipeline.js\\")
+    prop1: require("./fixtures/pipelines/./other-pipeline.js")
   }
 });
 pipeline.add(singleStep_1);
@@ -19,12 +19,12 @@ module.exports = pipeline;"
 `;
 
 exports[`generateCode $require with es module 1`] = `
-"import { Pipeline, SingleStep } from \\"runtimemodule\\";
-import handler_2 from \\"./fixtures/pipelines/./other-pipeline.js\\";
+"import { Pipeline, SingleStep } from "runtimemodule";
+import handler_2 from "./fixtures/pipelines/./other-pipeline.js";
 const pipeline = new Pipeline();
 const singleStep_1 = new SingleStep({
   id: 1,
-  name: \\"Some step\\",
+  name: "Some step",
   props: {
     prop1: handler_2
   }
@@ -40,7 +40,7 @@ exports[`generateCode composite steps 1`] = `
   EndStep,
   CompositeStep,
   SingleStep
-} = require(\\"runtimemodule\\");
+} = require("runtimemodule");
 
 const pipeline = new Pipeline();
 const startStep_1 = new StartStep({
@@ -77,7 +77,7 @@ exports[`generateCode composite substeps 1`] = `
   EndStep,
   CompositeStep,
   SingleStep
-} = require(\\"runtimemodule\\");
+} = require("runtimemodule");
 
 const pipeline = new Pipeline();
 const startStep_1 = new StartStep({
@@ -132,7 +132,7 @@ module.exports = pipeline;"
 exports[`generateCode empty 1`] = `
 "const {
   Pipeline
-} = require(\\"runtimemodule\\");
+} = require("runtimemodule");
 
 const pipeline = new Pipeline();
 module.exports = pipeline;"
@@ -144,9 +144,9 @@ exports[`generateCode step connections 1`] = `
   StartStep,
   EndStep,
   SingleStep
-} = require(\\"runtimemodule\\");
+} = require("runtimemodule");
 
-const requireFromString = require(\\"require-from-string\\");
+const requireFromString = require("require-from-string");
 
 const pipeline = new Pipeline();
 const startStep_1 = new StartStep({
@@ -157,24 +157,24 @@ const endStep_2 = new EndStep({
 });
 const singleStep_3 = new SingleStep({
   id: 3,
-  name: \\"Some step\\",
-  handler: requireFromString(\\"module.exports = (context, next) => { next('p3'); };\\"),
+  name: "Some step",
+  handler: requireFromString("module.exports = (context, next) => { next('p3'); };"),
   ports: {
-    in: [\\"p1\\", \\"p2\\"],
-    out: [\\"p3\\", \\"p4\\"]
+    in: ["p1", "p2"],
+    out: ["p3", "p4"]
   }
 });
 const singleStep_4 = new SingleStep({
   id: 4,
-  name: \\"Some step\\",
-  handler: requireFromString(\\"module.exports = (context, next) => { next('default'); };\\"),
+  name: "Some step",
+  handler: requireFromString("module.exports = (context, next) => { next('default'); };"),
   ports: {
-    in: [\\"p1\\", \\"p2\\"],
-    out: [\\"p3\\", \\"p4\\"]
+    in: ["p1", "p2"],
+    out: ["p3", "p4"]
   }
 });
-startStep_1.connectTo(singleStep_3, null, \\"p1\\");
-singleStep_3.connectTo(singleStep_4, \\"p4\\", \\"p2\\");
+startStep_1.connectTo(singleStep_3, null, "p1");
+singleStep_3.connectTo(singleStep_4, "p4", "p2");
 singleStep_4.connectTo(endStep_2);
 pipeline.add(startStep_1, endStep_2, singleStep_3, singleStep_4);
 module.exports = pipeline;"
@@ -187,9 +187,9 @@ exports[`generateCode steps 1`] = `
   EndStep,
   ErrorStep,
   SingleStep
-} = require(\\"runtimemodule\\");
+} = require("runtimemodule");
 
-const requireFromString = require(\\"require-from-string\\");
+const requireFromString = require("require-from-string");
 
 const pipeline = new Pipeline();
 const startStep_1 = new StartStep({
@@ -203,32 +203,32 @@ const errorStep_3 = new ErrorStep({
 });
 const singleStep_4 = new SingleStep({
   id: 3,
-  name: \\"Some step\\",
-  handler: requireFromString(\\"module.exports = (context, next) => { next(); };\\"),
+  name: "Some step",
+  handler: requireFromString("module.exports = (context, next) => { next(); };"),
   ports: {
-    in: [\\"p1\\", \\"p2\\"],
-    out: [\\"p3\\", \\"p4\\"]
+    in: ["p1", "p2"],
+    out: ["p3", "p4"]
   },
   props: {
     prop1: true,
-    prop2: \\"str\\",
+    prop2: "str",
     prop3: null,
     prop4: 123,
-    prop5: [true, \\"str\\", 123, [\\"srt\\"]],
+    prop5: [true, "str", 123, ["srt"]],
     prop6: {
       test1: 1,
-      test2: \\"str\\",
+      test2: "str",
       test3: null
     }
   }
 });
 const singleStep_5 = new SingleStep({
   id: 4,
-  name: \\"Some step\\",
-  handler: require(\\"./fixtures/pipelines/./handler.js\\"),
+  name: "Some step",
+  handler: require("./fixtures/pipelines/./handler.js"),
   ports: {
-    in: [\\"p1\\", \\"p2\\"],
-    out: [\\"p3\\", \\"p4\\"]
+    in: ["p1", "p2"],
+    out: ["p3", "p4"]
   },
   props: {}
 });
@@ -240,9 +240,9 @@ module.exports = pipeline;"
 `;
 
 exports[`generateCode steps with es module 1`] = `
-"import { Pipeline, StartStep, EndStep, ErrorStep, SingleStep } from \\"runtimemodule\\";
-import handler_6 from \\"./handler.js\\";
-import requireFromString from \\"require-from-string\\";
+"import { Pipeline, StartStep, EndStep, ErrorStep, SingleStep } from "runtimemodule";
+import handler_6 from "./handler.js";
+import requireFromString from "require-from-string";
 const pipeline = new Pipeline();
 const startStep_1 = new StartStep({
   id: 1
@@ -255,32 +255,32 @@ const errorStep_3 = new ErrorStep({
 });
 const singleStep_4 = new SingleStep({
   id: 3,
-  name: \\"Some step\\",
-  handler: requireFromString(\\"module.exports = (context, next) => { next(); };\\"),
+  name: "Some step",
+  handler: requireFromString("module.exports = (context, next) => { next(); };"),
   ports: {
-    in: [\\"p1\\", \\"p2\\"],
-    out: [\\"p3\\", \\"p4\\"]
+    in: ["p1", "p2"],
+    out: ["p3", "p4"]
   },
   props: {
     prop1: true,
-    prop2: \\"str\\",
+    prop2: "str",
     prop3: null,
     prop4: 123,
-    prop5: [true, \\"str\\", 123, [\\"srt\\"]],
+    prop5: [true, "str", 123, ["srt"]],
     prop6: {
       test1: 1,
-      test2: \\"str\\",
+      test2: "str",
       test3: null
     }
   }
 });
 const singleStep_5 = new SingleStep({
   id: 4,
-  name: \\"Some step\\",
+  name: "Some step",
   handler: handler_6,
   ports: {
-    in: [\\"p1\\", \\"p2\\"],
-    out: [\\"p3\\", \\"p4\\"]
+    in: ["p1", "p2"],
+    out: ["p3", "p4"]
   },
   props: {}
 });
